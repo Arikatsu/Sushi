@@ -25,7 +25,7 @@ module.exports = {
       )
       .addField(
         "• **UTILITY**",
-        "discriminator, findemoji, sudo , haste"
+        "discriminator, findemoji, sudo, haste, say"
       )
       .addField(
         "• **SEARCH**",
