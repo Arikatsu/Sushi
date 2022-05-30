@@ -61,7 +61,6 @@ client.on("ready", () => {
     console.log("Bot is working!!")
 });
 
-client.on
 client.on("ready", () => {
     client.user.setActivity("your mom", { type: "STREAMING", url: "https://www.twitch.tv/scaldwashere_"})
 });
