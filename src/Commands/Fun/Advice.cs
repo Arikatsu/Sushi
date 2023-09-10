@@ -14,7 +14,7 @@ namespace Sushi.Commands.Fun
             var httpClient = new HttpClient();
             var response = await httpClient.GetAsync("https://api.adviceslip.com/advice");
             var content = await response.Content.ReadAsStringAsync();
-            var advice = JsonConvert.DeserializeObject<Advice>(content);
+            var advice = JsonConvert.DeserializeObject<AdviceJson>(content);
 
             Embed embed = new EmbedBuilder()
                 .WithColor(Color.DarkGrey)
@@ -25,7 +25,7 @@ namespace Sushi.Commands.Fun
         }
     }
 
-    internal class Slip
+    internal class SlipJson
     {
         [JsonProperty("advice")]
         public string? Advice { get; set; }
@@ -34,9 +34,9 @@ namespace Sushi.Commands.Fun
         public string? Id { get; set; }
     }
 
-    internal class Advice
+    internal class AdviceJson
     {
         [JsonProperty("slip")]
-        public Slip? Slip { get; set; }
+        public SlipJson? Slip { get; set; }
     }
 }
