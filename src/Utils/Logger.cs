@@ -36,15 +36,14 @@ namespace Sushi.Utils
 
             string time = DateTime.Now.ToString("HH:mm:ss");
 
-            Console.WriteLine($"{LogLevel.Dim}{time}{LogLevel.Reset}    [{severity}:{message.Source}]   {message.Message}");
+            Console.WriteLine($"{LogLevel.Dim}{time}{LogLevel.Reset}    [{severity}]   {message.Message}");
 
             await Task.CompletedTask;
         }
 
-        private static void Log(string message, string source, string severity = "INFO")
+        private static void Log(string message, string severity = "INFO")
         {
             string time = DateTime.Now.ToString("HH:mm:ss");
-            string location = Path.GetFileName(source);
 
             switch (severity)
             {
@@ -67,13 +66,13 @@ namespace Sushi.Utils
                     throw new ArgumentOutOfRangeException(nameof(severity), severity, null);
             }
 
-            Console.WriteLine($"{LogLevel.Dim}{time}{LogLevel.Reset}    [{severity}:{location}]   {message}");
+            Console.WriteLine($"{LogLevel.Dim}{time}{LogLevel.Reset}    [{severity}]   {message}");
         }
 
-        public static void Error(string message, string source) => Log(message, source, "ERROR");
-        public static void Warn(string message, string source) => Log(message, source, "WARN");
-        public static void Info(string message, string source) => Log(message, source, "INFO");
-        public static void Debug(string message, string source) => Log(message, source, "DEBUG");
-        public static void Raw(string message, string source) => Log(message, source, "RAW");
+        public static void Error(string message) => Log(message, "ERROR");
+        public static void Warn(string message) => Log(message, "WARN");
+        public static void Info(string message) => Log(message, "INFO");
+        public static void Debug(string message) => Log(message, "DEBUG");
+        public static void Raw(string message) => Log(message, "RAW");
     }
 }

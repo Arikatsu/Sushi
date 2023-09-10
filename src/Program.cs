@@ -26,10 +26,10 @@ namespace Sushi
             
             _client.Log += Logger.ClientLog;
 
-            _mongoClient = new MongoClient(GlobalVars.Config.MongoSRV);
+            //_mongoClient = new MongoClient(GlobalVars.Config.MongoSRV);
 
-            GlobalVars.Database = _mongoClient.GetDatabase("Sushi");
-            Logger.Info("Connected to MongoDB.", Assembly.GetExecutingAssembly().Location);
+            //GlobalVars.Database = _mongoClient.GetDatabase("Sushi");
+            Logger.Info("Connected to MongoDB.");
 
             await _client.LoginAsync(TokenType.Bot, GlobalVars.Config.Token);
             await _client.StartAsync();
