@@ -24,6 +24,10 @@ namespace Sushi.Utils
 
     internal class ConfigStruct
     {
-        public string TOKEN { get; set; } = "";
+        public string Token { get; set; } = "";
+        public string OwnerId { get; set; } = "";
+        public string Prefix { get; set; } = "";
+        public string ClientId { get; set; } = "";
+        public string MongoSRV { get; set; } = "";
     }
 }

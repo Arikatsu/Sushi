@@ -40,5 +40,40 @@ namespace Sushi.Utils
 
             await Task.CompletedTask;
         }
+
+        private static void Log(string message, string source, string severity = "INFO")
+        {
+            string time = DateTime.Now.ToString("HH:mm:ss");
+            string location = Path.GetFileName(source);
+
+            switch (severity)
+            {
+                case "ERROR":
+                    severity = LogLevel.Foreground.Error + LogLevel.Bold + severity + LogLevel.Reset;
+                    break;
+                case "WARNING":
+                    severity = LogLevel.Foreground.Warning + severity + LogLevel.Reset;
+                    break;
+                case "INFO":
+                    severity = LogLevel.Foreground.Info + severity + LogLevel.Reset;
+                    break;
+                case "DEBUG":
+                    severity = LogLevel.Foreground.Debug + severity + LogLevel.Reset;
+                    break;
+                case "RAW":
+                    severity = LogLevel.Foreground.Raw + severity + LogLevel.Reset;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(severity), severity, null);
+            }
+
+            Console.WriteLine($"{LogLevel.Dim}{time}{LogLevel.Reset}    [{severity}:{location}]   {message}");
+        }
+
+        public static void Error(string message, string source) => Log(message, source, "ERROR");
+        public static void Warn(string message, string source) => Log(message, source, "WARN");
+        public static void Info(string message, string source) => Log(message, source, "INFO");
+        public static void Debug(string message, string source) => Log(message, source, "DEBUG");
+        public static void Raw(string message, string source) => Log(message, source, "RAW");
     }
 }

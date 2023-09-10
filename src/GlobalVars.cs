@@ -1,4 +1,5 @@
 ﻿using Sushi.Utils;
+using MongoDB.Driver;
 
 namespace Sushi
 {
@@ -8,6 +9,7 @@ namespace Sushi
 
         public static ConfigStruct Config { get; set; }
 
+        public static IMongoDatabase Database { get; set; }
 #pragma warning restore CS8618
     }
 }

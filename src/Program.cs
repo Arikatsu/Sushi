@@ -1,5 +1,7 @@
-﻿using Discord;
+﻿using System.Reflection;
+using Discord;
 using Discord.WebSocket;
+using MongoDB.Driver;
 using Sushi.Utils;
 
 namespace Sushi
@@ -7,6 +9,7 @@ namespace Sushi
     internal class Sushi
     {
         private DiscordSocketClient? _client;
+        private MongoClient? _mongoClient;
 
         public static Task Main(string[] args) => new Sushi().MainAsync();
 
@@ -14,10 +17,21 @@ namespace Sushi
         {
             await Config.LoadConfig();
 
-            _client = new DiscordSocketClient();
+            _client = new DiscordSocketClient(new DiscordSocketConfig
+            {
+                MessageCacheSize = 100,
+                GatewayIntents = GatewayIntents.All,
+                LogGatewayIntentWarnings = false,
+            });
+            
             _client.Log += Logger.ClientLog;
 
-            await _client.LoginAsync(TokenType.Bot, GlobalVars.Config.TOKEN);
+            _mongoClient = new MongoClient(GlobalVars.Config.MongoSRV);
+
+            GlobalVars.Database = _mongoClient.GetDatabase("Sushi");
+            Logger.Info("Connected to MongoDB.", Assembly.GetExecutingAssembly().Location);
+
+            await _client.LoginAsync(TokenType.Bot, GlobalVars.Config.Token);
             await _client.StartAsync();
 
             await Task.Delay(Timeout.Infinite);
