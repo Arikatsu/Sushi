@@ -8,33 +8,39 @@ namespace Sushi
 {
     internal class Sushi
     {
-        private DiscordSocketClient? _client;
-        private MongoClient? _mongoClient;
-
         public static Task Main(string[] args) => new Sushi().MainAsync();
-
+        
         public async Task MainAsync()
         {
             await Config.LoadConfig();
 
-            _client = new DiscordSocketClient(new DiscordSocketConfig
+            GlobalVars.DiscordClient = new DiscordSocketClient(new DiscordSocketConfig
             {
                 MessageCacheSize = 100,
                 GatewayIntents = GatewayIntents.All,
                 LogGatewayIntentWarnings = false,
             });
-            
-            _client.Log += Logger.ClientLog;
 
-            //_mongoClient = new MongoClient(GlobalVars.Config.MongoSRV);
+            GlobalVars.DiscordClient.Log += Logger.ClientLog;
 
-            //GlobalVars.Database = _mongoClient.GetDatabase("Sushi");
-            Logger.Info("Connected to MongoDB.");
+            GlobalVars.DiscordClient.Ready += ClientReady;
 
-            await _client.LoginAsync(TokenType.Bot, GlobalVars.Config.Token);
-            await _client.StartAsync();
+            GlobalVars.DatabaseClient = new MongoClient(GlobalVars.Config.MongoSRV);
+            Logger.Info("Connected to Database.");
+
+            await GlobalVars.DiscordClient.LoginAsync(TokenType.Bot, GlobalVars.Config.Token);
+            await GlobalVars.DiscordClient.StartAsync();
 
             await Task.Delay(Timeout.Infinite);
+        }
+
+        public async Task ClientReady()
+        {
+            await GlobalVars.DiscordClient.SetGameAsync(
+                name: "deez nuts",
+                type: ActivityType.Watching
+            );
+            Logger.Info("Client is ready.");
         }
     }
 }

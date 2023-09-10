@@ -15,6 +15,10 @@
 		<PackageReference Include="MongoDB.Driver.Core" Version="2.21.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="src\Services\" />
+	</ItemGroup>
+
 	<Target Name="CopyConfigFile" BeforeTargets="Build">
 		<ItemGroup>
 			<ConfigFiles Include="src/config.json" />
