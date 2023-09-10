@@ -53,10 +53,10 @@ namespace Sushi
             
 #if DEBUG
             await GlobalVars.InteractionCommands.RegisterCommandsToGuildAsync(ulong.Parse(GlobalVars.Config.TestGuildId));
-            Logger.Info("Registered commands to test guild.");
+            Logger.Info($"Registered {GlobalVars.InteractionCommands.Modules.Count} commands to test guild.");
 #else
             await GlobalVars.InteractionCommands.RegisterCommandsGloballyAsync();
-            Logger.Info("Registered commands globally.");
+            Logger.Info($"Registered {GlobalVars.InteractionCommands.Modules.Count} commands globally.");
 #endif
 
             Logger.Info("Client is ready.");
