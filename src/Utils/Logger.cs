@@ -25,12 +25,12 @@ namespace Sushi.Utils
         {
             var severity = message.Severity switch
             {
-                LogSeverity.Critical => LogLevel.Foreground.Error + LogLevel.Bold + "CRITICAL" + LogLevel.Reset,
-                LogSeverity.Error => LogLevel.Foreground.Error + "ERROR" + LogLevel.Reset,
-                LogSeverity.Warning => LogLevel.Foreground.Warning + "WARNING" + LogLevel.Reset,
-                LogSeverity.Info => LogLevel.Foreground.Info + "INFO" + LogLevel.Reset,
+                LogSeverity.Critical => LogLevel.Foreground.Error + LogLevel.Bold + "CTL" + LogLevel.Reset,
+                LogSeverity.Error => LogLevel.Foreground.Error + "ERR" + LogLevel.Reset,
+                LogSeverity.Warning => LogLevel.Foreground.Warning + "WRN" + LogLevel.Reset,
+                LogSeverity.Info => LogLevel.Foreground.Info + "INF" + LogLevel.Reset,
                 LogSeverity.Verbose => LogLevel.Foreground.Raw + "RAW" + LogLevel.Reset,
-                LogSeverity.Debug => LogLevel.Foreground.Debug + "DEBUG" + LogLevel.Reset,
+                LogSeverity.Debug => LogLevel.Foreground.Debug + "DBG" + LogLevel.Reset,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
@@ -47,16 +47,16 @@ namespace Sushi.Utils
 
             switch (severity)
             {
-                case "ERROR":
-                    severity = LogLevel.Foreground.Error + LogLevel.Bold + severity + LogLevel.Reset;
+                case "ERR":
+                    severity = LogLevel.Foreground.Error + severity + LogLevel.Reset;
                     break;
-                case "WARNING":
+                case "WRN":
                     severity = LogLevel.Foreground.Warning + severity + LogLevel.Reset;
                     break;
-                case "INFO":
+                case "INF":
                     severity = LogLevel.Foreground.Info + severity + LogLevel.Reset;
                     break;
-                case "DEBUG":
+                case "DBG":
                     severity = LogLevel.Foreground.Debug + severity + LogLevel.Reset;
                     break;
                 case "RAW":
@@ -69,10 +69,10 @@ namespace Sushi.Utils
             Console.WriteLine($"{LogLevel.Dim}{time}{LogLevel.Reset}    [{severity}]   {message}");
         }
 
-        public static void Error(string message) => Log(message, "ERROR");
-        public static void Warn(string message) => Log(message, "WARN");
-        public static void Info(string message) => Log(message, "INFO");
-        public static void Debug(string message) => Log(message, "DEBUG");
+        public static void Error(string message) => Log(message, "ERR");
+        public static void Warn(string message) => Log(message, "WRN");
+        public static void Info(string message) => Log(message, "INF");
+        public static void Debug(string message) => Log(message, "DBG");
         public static void Raw(string message) => Log(message, "RAW");
     }
 }
