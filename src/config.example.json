@@ -3,5 +3,6 @@
 	"OwnerId": "",
 	"Prefix": "",
 	"ClientId": "",
+  "TestGuildId": "",
 	"MongoSRV": ""
 }

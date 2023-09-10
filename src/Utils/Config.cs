@@ -28,6 +28,7 @@ namespace Sushi.Utils
         public string OwnerId { get; set; } = "";
         public string Prefix { get; set; } = "";
         public string ClientId { get; set; } = "";
+        public string TestGuildId { get; set; } = "";
         public string MongoSRV { get; set; } = "";
     }
 }
