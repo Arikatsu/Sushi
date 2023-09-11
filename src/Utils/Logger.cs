@@ -36,7 +36,7 @@ namespace Sushi.Utils
 
             string time = DateTime.Now.ToString("HH:mm:ss");
 
-            Console.WriteLine($"{LogLevel.Dim}{time}{LogLevel.Reset}    [{severity}]   {message.Message}");
+            Console.WriteLine($"{LogLevel.Dim}{time}{LogLevel.Reset}    [{severity}]   {message.Message + message.Exception}");
 
             await Task.CompletedTask;
         }
