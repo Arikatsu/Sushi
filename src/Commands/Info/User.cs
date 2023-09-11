@@ -1,12 +1,9 @@
-﻿using Discord.Interactions;
+﻿using Discord;
+using Discord.Interactions;
 using Discord.WebSocket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using Discord;
+using Sushi.Utils;
+using Discord.Rest;
 
 namespace Sushi.Commands.Info
 {
@@ -30,11 +27,11 @@ namespace Sushi.Commands.Info
         };
 
         [SlashCommand("info", "Get info about a user")]
-        public async Task HandleInfoAsync([Summary("user", "The user to get info about")] SocketUser? user = null)
+        public async Task HandleInfoAsync([Summary("user", "The user to get info about")] RestUser? user = null)
         {
             await DeferAsync();
 
-            user ??= Context.User;
+            user ??= await GlobalVars.DiscordClient.Rest.GetUserAsync(Context.User.Id);
 
             SocketGuildUser guildUser = Context.Guild.GetUser(user.Id);
 
@@ -49,7 +46,7 @@ namespace Sushi.Commands.Info
 
             foreach (var badge in badges)
             {
-                badgeNameList.Add(ConvertUpperCamelCaseToWords(badge));
+                badgeNameList.Add(Helpers.ConvertUpperCamelCaseToWords(badge));
             }   
 
             string badgesString = string.Join(", ", badgeNameList);
@@ -71,9 +68,10 @@ namespace Sushi.Commands.Info
             Embed embed = new EmbedBuilder()
                 .WithColor(EmbedColor[guildUser.Status.ToString()])
                 .WithDescription(string.Join("\n", activities))
-                .AddField("Account Created", user.CreatedAt.ToString("dd/MM/yyyy"))
-                .AddField("Information", $"**ID**: {user.Id}\n**Username**: {user.Username}\n**Bot**: {user.IsBot}")
-                .AddField("Badges", badgesString)
+                .WithImageUrl(user.GetBannerUrl(size: 2048))
+                .AddField("**Account Created**", Helpers.GetDiscordTimestamp(user.CreatedAt))
+                .AddField("**Information**", $"**ID**: {user.Id}\n**Username**: {user.Username}\n**Bot**: {user.IsBot}")
+                .AddField("**Badges**", badgesString)
                 .WithThumbnailUrl(user.GetAvatarUrl())
                 .WithFooter(user.Status.ToString(), UserState[user.Status.ToString()])
                 .Build();
@@ -101,11 +99,6 @@ namespace Sushi.Commands.Info
                 .Build();
 
             await FollowupAsync(embeds: new[] { embed });
-        }
-
-        private static string ConvertUpperCamelCaseToWords(string str)
-        {
-            return Regex.Replace(str, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
         }
     }
 }
