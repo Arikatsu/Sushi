@@ -9,7 +9,7 @@ namespace Sushi
     internal class GlobalVars
     {
 #pragma warning disable CS8618
-
+        public static string Version { get; set; } = "3.0.0";
         public static ConfigStruct Config { get; set; }
         public static DiscordSocketClient DiscordClient { get; set; }
         public static MongoClient DatabaseClient { get; set; }
