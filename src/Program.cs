@@ -20,10 +20,12 @@ namespace Sushi
                 MessageCacheSize = 100,
                 GatewayIntents = GatewayIntents.All,
                 LogGatewayIntentWarnings = false,
+                UseInteractionSnowflakeDate = false
             });
 
             GlobalVars.DatabaseClient = new MongoClient(GlobalVars.Config.MongoSRV);
-            Logger.Info("Connected to Database.");
+            GlobalVars.Database = GlobalVars.DatabaseClient.GetDatabase("Sushi");
+            Logger.Info($"Connected to Database: {GlobalVars.Database.DatabaseNamespace.DatabaseName}");
 
             GlobalVars.InteractionCommands = new InteractionService(GlobalVars.DiscordClient, new InteractionServiceConfig
             {

@@ -13,6 +13,7 @@ namespace Sushi
         public static ConfigStruct Config { get; set; }
         public static DiscordSocketClient DiscordClient { get; set; }
         public static MongoClient DatabaseClient { get; set; }
+        public static IMongoDatabase Database { get; set; }
         public static IServiceProvider Services { get; set; }
         public static InteractionService InteractionCommands { get; set; }
         public static InteractionHandler InteractionHandler { get; set; }
