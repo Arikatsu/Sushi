@@ -34,7 +34,7 @@ namespace Sushi.src.Commands.Fun
 
             var waifuRate = new Random().Next(0, 100);
 
-            await FollowupAsync($"{(user == null ? "You are" : user?.Username + "is")} a {waifuRate}/100 waifu");
+            await FollowupAsync($"{(user == null ? "You are" : user?.Username + " is")} a {waifuRate}/100 waifu");
         }
     }
 }
