@@ -9,7 +9,7 @@ namespace Sushi.Commands.Fun
     public class AdviceModule : InteractionModuleBase<SocketInteractionContext>
     {
         private readonly string _geminiUrl = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key={GlobalVars.Config.GeminiApiKey}";
-        string[] promptTopics = {
+        private readonly string[] promptTopics = {
             "Tell me a piece of advice no one expects but everyone should hear.",
             "What's a controversial but useful life tip?",
             "Give me advice that sounds wrong at first, but is actually brilliant.",
