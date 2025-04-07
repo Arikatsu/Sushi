@@ -31,5 +31,6 @@ namespace Sushi.Utils
         public string TestGuildId { get; set; } = "";
         public string BugReportChannelId { get; set; } = "";
         public string MongoSRV { get; set; } = "";
+        public string GeminiApiKey { get; set; } = "";
     }
 }

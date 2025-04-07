@@ -3,6 +3,7 @@
 	"OwnerId": "",
 	"Prefix": "",
 	"ClientId": "",
-  "TestGuildId": "",
-	"MongoSRV": ""
+  	"TestGuildId": "",
+	"MongoSRV": "",
+	"GeminiApiKey": ""
 }
