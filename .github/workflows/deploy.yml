@@ -17,5 +17,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
-        script: |
-          /home/${{ secrets.USERNAME }}/Sushi-v3/deploy.sh
+        script_path: $HOME/Sushi-v3/deploy.sh
