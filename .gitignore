@@ -364,3 +364,5 @@ FodyWeavers.xsd
 
 # User ignored files
 src/config.json
+deploy.log
+.idea/
