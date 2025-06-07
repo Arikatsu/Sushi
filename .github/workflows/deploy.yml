@@ -1,0 +1,21 @@
+name: Automated Sushi Deployment
+description: Deploy Sushi application to production server using SSH
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Deploy via SSH
+      uses: appleboy/ssh-action@v1
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+        script: |
+          /home/${{ secrets.USERNAME }}/Sushi-v3/deploy.sh
