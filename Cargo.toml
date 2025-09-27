@@ -1,0 +1,10 @@
+[package]
+name = "sushi-rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+poise = "0.6.1"
+tokio = { version = "1.36.0", features = ["rt-multi-thread"] }
+toml = "0.9.7"
+serde = { version = "1.0.227", features = ["derive"] }
