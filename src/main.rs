@@ -1,62 +1,52 @@
-mod config;
+#![feature(random)]
 
-use poise::{async_trait, serenity_prelude as serenity};
+mod config;
+mod commands;
+
+use std::sync::Arc;
+
+use poise::{serenity_prelude as serenity};
 use serenity::GatewayIntents;
+use reqwest;
+
+struct Data {
+    http_client: Arc<reqwest::Client>,
+    app_config: &'static config::Config,
+}
 
 type Error = Box<dyn std::error::Error + Send + Sync>;
-type Context<'a> = poise::Context<'a, (), Error>;
-
-#[poise::command(slash_command, prefix_command)]
-async fn age(
-    ctx: Context<'_>,
-    #[description = "Selected user"] user: Option<serenity::User>,
-) -> Result<(), Error> {
-    let u = user.as_ref().unwrap_or_else(|| ctx.author());
-    let response = format!("{}'s account was created at {}", u.name, u.created_at());
-    ctx.say(response).await?;
-    Ok(())
-}
-
-struct MessageHandler;
-
-#[async_trait]
-impl serenity::EventHandler for MessageHandler {
-    async fn message(&self, ctx: serenity::Context, msg: serenity::Message) {
-        if msg.content == "!ping" {
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
-                println!("Error sending message: {:?}", why);
-            }
-        }
-    }
-}
+type Context<'a> = poise::Context<'a, Data, Error>;
 
 #[tokio::main]
 async fn main() {
-    config::Config::load();
+    let config = config::Config::load();
 
     let intents = GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT;
 
-    let framework = poise::Framework::builder()
+    let framework = poise::Framework::<Data, Error>::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![age()],
+            commands: commands::all_commands(),
             ..Default::default()
         })
-        .setup(|ctx, _ready, framework| {
+        .setup(move |ctx, _ready, framework| {
             Box::pin(async move {
                 poise::builtins::register_in_guild(
                     ctx,
                     &framework.options().commands,
-                    config::Config::get().test_guild_id.into(),
+                    config.test_guild_id.into(),
                 )
                 .await
                 .unwrap();
-                Ok(())
+
+                Ok(Data {
+                    http_client: Arc::new(reqwest::Client::new()),
+                    app_config: config,
+                })
             })
         })
         .build();
 
-    let client = serenity::ClientBuilder::new(&config::Config::get().discord_token, intents)
-        .event_handler(MessageHandler)
+    let client = serenity::ClientBuilder::new(&config.discord_token, intents)
         .framework(framework)
         .await;
 
