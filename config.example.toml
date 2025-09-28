@@ -1,0 +1,4 @@
+discord_token = "<DISCORD_BOT_TOKEN>"
+test_guild_id = 123456789012345678
+gemini_api_key = "<GEMINI_API_KEY>"
+advice_instruction = "<ADVICE_COMMAND_INSTRUCTION>"
