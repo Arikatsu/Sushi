@@ -1870,6 +1870,7 @@ name = "sushi-rs"
 version = "0.1.0"
 dependencies = [
  "poise",
+ "rand",
  "reqwest 0.12.23",
  "serde",
  "serde_json",

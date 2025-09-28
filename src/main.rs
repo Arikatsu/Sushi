@@ -1,5 +1,3 @@
-#![feature(random)]
-
 mod commands;
 mod config;
 mod logger;
@@ -19,7 +17,7 @@ type Context<'a> = poise::Context<'a, Data, Error>;
 async fn main() {
     #[cfg(debug_assertions)]
     logger::enable_debug();
-    
+
     let config = config::Config::load();
     logger::info!("Config loaded");
 

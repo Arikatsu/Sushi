@@ -1,5 +1,4 @@
 use poise::serenity_prelude as serenity;
-use std::random;
 
 use crate::{Context, Error};
 use crate::logger as logger;
@@ -27,7 +26,7 @@ pub async fn advice(
 
     let data = ctx.data();
     let topic = topic.unwrap_or_else(|| {
-        let idx = random::random::<usize>() % PROMPT_TOPICS.len();
+        let idx = rand::random::<usize>() % PROMPT_TOPICS.len();
         PROMPT_TOPICS[idx].to_string()
     });
 
