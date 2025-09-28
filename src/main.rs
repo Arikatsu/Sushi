@@ -1,8 +1,8 @@
 mod commands;
-mod events;
 mod config;
-mod logger;
+mod events;
 mod gemini_state;
+mod logger;
 
 use poise::serenity_prelude as serenity;
 use serenity::GatewayIntents;
@@ -40,6 +40,7 @@ async fn main() {
         })
         .setup(move |ctx, _ready, framework| {
             Box::pin(async move {
+                #[cfg(debug_assertions)]
                 poise::builtins::register_in_guild(
                     ctx,
                     &framework.options().commands,
@@ -47,6 +48,11 @@ async fn main() {
                 )
                 .await
                 .unwrap();
+
+                #[cfg(not(debug_assertions))]
+                poise::builtins::register_globally(ctx, &framework.options().commands)
+                    .await
+                    .unwrap();
 
                 ctx.set_activity(Some(serenity::ActivityData::watching("Breaking Bad")));
 
