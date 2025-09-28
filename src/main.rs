@@ -54,7 +54,7 @@ async fn main() {
                     http_client: reqwest::Client::new(),
                     app_config: config,
                     start_time,
-                    gemini_state: gemini_state::GeminiState::new(),
+                    gemini_state: gemini_state::GeminiState::new(config.ai.global_cooldown_seconds),
                 })
             })
         })

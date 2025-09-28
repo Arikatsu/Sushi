@@ -9,3 +9,4 @@ gemini_api_key = "<GEMINI_API_KEY>"
 advice_instruction = "<ADVICE_COMMAND_INSTRUCTION>"
 message_event_instruction = "<MESSAGE_EVENT_INSTRUCTION>"
 allowed_guilds = [123456789012345678]
+global_cooldown_seconds = 10
