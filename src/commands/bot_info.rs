@@ -29,11 +29,11 @@ pub async fn bot_info(ctx: Context<'_>) -> Result<(), Error> {
         .thumbnail(avatar_url)
         .field("**Version**", env!("CARGO_PKG_VERSION"), true)
         .field("**Source Code**", "[GitHub](https://github.com/Arikatsu/Sushi)", true)
-        .field("**Invite**", format!("[Invite Link](https://discord.com/api/oauth2/authorize?client_id={}&permissions=8&scope=bot%20applications.commands)", app_config.client_id), true)
+        .field("**Invite**", format!("[Invite Link](https://discord.com/api/oauth2/authorize?client_id={}&permissions=8&scope=bot%20applications.commands)", app_config.bot.client_id), true)
         .field("**Server Count**", format!("{}", guild_count), true)
         .field("**Latency**", format!("{}ms", ctx.ping().await.as_millis()), true)
         .field("**Uptime**", format_time!(ctx.data().start_time.elapsed().as_secs()), true)
-        .field("**Developer**", format!("<@{}>", &app_config.owner_id), true)
+        .field("**Developer**", format!("<@{}>", &app_config.bot.owner_id), true)
         .field("**Library**", "[Poise](https://github.com/serenity-rs/poise)", true)
         .color(serenity::Colour::BLUE);
 

@@ -1,7 +1,7 @@
-use poise::serenity_prelude as serenity;
-
+use crate::logger;
 use crate::{Context, Error};
-use crate::logger as logger;
+
+use poise::serenity_prelude as serenity;
 
 const PROMPT_TOPICS: [&str; 8] = [
     "Tell me a piece of advice no one expects but everyone should hear.",
@@ -14,7 +14,8 @@ const PROMPT_TOPICS: [&str; 8] = [
     "Write life advice as if you were an ancient tree talking to a squirrel.",
 ];
 
-const API_URL: &str = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent";
+const API_URL: &str =
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent";
 
 /// Gives random advice for no reason.
 #[poise::command(slash_command)]
@@ -41,7 +42,7 @@ pub async fn advice(
         ],
         "system_instruction": {
             "parts": [
-                { "text": data.app_config.advice_instruction }
+                { "text": data.app_config.ai.advice_instruction }
             ]
         },
         "generationConfig": {
@@ -56,7 +57,7 @@ pub async fn advice(
     let response = data
         .http_client
         .post(API_URL)
-        .header("x-goog-api-key", &data.app_config.gemini_api_key)
+        .header("x-goog-api-key", &data.app_config.ai.gemini_api_key)
         .json(&request_body)
         .send()
         .await?;

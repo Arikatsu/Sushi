@@ -31,8 +31,8 @@ async fn main() {
     let framework = poise::Framework::<Data, Error>::builder()
         .options(poise::FrameworkOptions {
             commands: commands::all_commands(),
-            event_handler: |ctx, event, framework, data| {
-                Box::pin(events::handler(ctx, event, framework, data))
+            event_handler: |ctx, event, _framework, data| {
+                Box::pin(events::handler(ctx, event, data))
             },
             ..Default::default()
         })
@@ -41,7 +41,7 @@ async fn main() {
                 poise::builtins::register_in_guild(
                     ctx,
                     &framework.options().commands,
-                    config.test_guild_id.into(),
+                    config.bot.test_guild_id.into(),
                 )
                 .await
                 .unwrap();
@@ -57,7 +57,7 @@ async fn main() {
         })
         .build();
 
-    let client = serenity::ClientBuilder::new(&config.discord_token, intents)
+    let client = serenity::ClientBuilder::new(&config.bot.discord_token, intents)
         .framework(framework)
         .await;
 

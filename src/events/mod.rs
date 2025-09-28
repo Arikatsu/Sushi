@@ -7,7 +7,6 @@ use poise::serenity_prelude as serenity;
 pub async fn handler(
     ctx: &serenity::Context,
     event: &serenity::FullEvent,
-    _framework: poise::FrameworkContext<'_, Data, Error>,
     data: &Data,
 ) -> Result<(), Error> {
     match event {
