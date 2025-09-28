@@ -1,4 +1,5 @@
 mod commands;
+mod events;
 mod config;
 mod logger;
 
@@ -30,6 +31,9 @@ async fn main() {
     let framework = poise::Framework::<Data, Error>::builder()
         .options(poise::FrameworkOptions {
             commands: commands::all_commands(),
+            event_handler: |ctx, event, framework, data| {
+                Box::pin(events::handler(ctx, event, framework, data))
+            },
             ..Default::default()
         })
         .setup(move |ctx, _ready, framework| {
