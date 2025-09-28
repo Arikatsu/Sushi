@@ -46,6 +46,8 @@ async fn main() {
                 .await
                 .unwrap();
 
+                ctx.set_activity(Some(serenity::ActivityData::watching("Breaking Bad")));
+
                 Ok(Data {
                     http_client: reqwest::Client::new(),
                     app_config: config,

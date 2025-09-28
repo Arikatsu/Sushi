@@ -14,6 +14,7 @@ pub async fn handler(
         serenity::FullEvent::Message { new_message } => {
             message::handle(ctx, new_message, data).await;
         }
+
         _ => {}
     }
     Ok(())
