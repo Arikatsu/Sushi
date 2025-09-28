@@ -1,7 +1,8 @@
 [package]
 name = "sushi-rs"
-version = "0.1.0"
+version = "4.0.0"
 edition = "2024"
+authors = ["Arikatsu"]
 
 [dependencies]
 poise = "0.6.1"

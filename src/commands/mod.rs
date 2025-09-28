@@ -1,7 +1,9 @@
 mod advice;
+mod bot_info;
 
 pub use advice::advice;
+pub use bot_info::bot_info;
 
 pub fn all_commands() -> Vec<poise::Command<crate::Data, crate::Error>> {
-    vec![advice()]
+    vec![advice(), bot_info()]
 }

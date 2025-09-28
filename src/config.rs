@@ -6,6 +6,8 @@ use serde::Deserialize;
 #[derive(Debug, Deserialize)]
 pub struct Config {
     pub discord_token: String,
+    pub client_id: u64,
+    pub owner_id: u64,
     pub test_guild_id: u64,
     pub gemini_api_key: String,
     pub advice_instruction: String,
