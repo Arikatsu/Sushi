@@ -1,16 +1,14 @@
 #![feature(random)]
 
-mod config;
 mod commands;
+mod config;
+mod logger;
 
-use std::sync::Arc;
-
-use poise::{serenity_prelude as serenity};
+use poise::serenity_prelude as serenity;
 use serenity::GatewayIntents;
-use reqwest;
 
 struct Data {
-    http_client: Arc<reqwest::Client>,
+    http_client: reqwest::Client,
     app_config: &'static config::Config,
 }
 
@@ -19,10 +17,15 @@ type Context<'a> = poise::Context<'a, Data, Error>;
 
 #[tokio::main]
 async fn main() {
+    #[cfg(debug_assertions)]
+    logger::enable_debug();
+    
     let config = config::Config::load();
+    logger::info!("Config loaded");
 
     let intents = GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT;
 
+    logger::info!("Setting up framework...");
     let framework = poise::Framework::<Data, Error>::builder()
         .options(poise::FrameworkOptions {
             commands: commands::all_commands(),
@@ -39,7 +42,7 @@ async fn main() {
                 .unwrap();
 
                 Ok(Data {
-                    http_client: Arc::new(reqwest::Client::new()),
+                    http_client: reqwest::Client::new(),
                     app_config: config,
                 })
             })
@@ -50,9 +53,9 @@ async fn main() {
         .framework(framework)
         .await;
 
-    client
-        .unwrap()
-        .start()
-        .await
-        .unwrap();
+    logger::info!("Running client...");
+
+    if let Err(err) = client.unwrap().start().await {
+        logger::error!("Error running client: {:?}", err);
+    }
 }
