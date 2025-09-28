@@ -35,6 +35,16 @@ pub async fn handle(_ctx: &serenity::Context, _new_message: &Message, _data: &cr
                 { "text": _data.app_config.ai.message_event_instruction }
             ]
         },
+        "safetySettings": [
+            {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "threshold": "BLOCK_NONE"
+            },
+            {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "threshold": "BLOCK_NONE"
+            }
+        ],
         "generationConfig": {
             "temperature": 0.5,
             "topP": 0.8,
