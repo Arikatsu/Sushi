@@ -21,6 +21,10 @@ pub struct BotConfig {
 pub struct AIConfig {
     pub gemini_api_key: String,
     pub advice_instruction: String,
+    pub message_event_instruction: String,
+    // "use a HashSet bro" this list contains like TWO GUILDS brochacho
+    pub allowed_guilds: Vec<u64>,
+    pub global_cooldown_seconds: u64,
 }
 
 static CONFIG: OnceLock<Config> = OnceLock::new();
