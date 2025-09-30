@@ -2,6 +2,7 @@ use crate::logger;
 use crate::{Context, Error};
 
 use poise::serenity_prelude as serenity;
+use tokio::time::Instant;
 
 const PROMPT_TOPICS: [&str; 8] = [
     "Tell me a piece of advice no one expects but everyone should hear.",
@@ -34,7 +35,8 @@ pub async fn advice(
     }
     
     let topic = topic.unwrap_or_else(|| {
-        let idx = rand::random::<usize>() % PROMPT_TOPICS.len();
+        let t = Instant::now().elapsed().as_nanos();
+        let idx = ((t ^ (t >> 32)) % (PROMPT_TOPICS.len() as u128)) as usize;
         PROMPT_TOPICS[idx].to_string()
     });
 
