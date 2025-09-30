@@ -1,5 +1,7 @@
-use std::sync::OnceLock;
+use crate::logger;
+
 use std::fs;
+use std::sync::OnceLock;
 
 use serde::Deserialize;
 
@@ -32,8 +34,14 @@ static CONFIG: OnceLock<Config> = OnceLock::new();
 impl Config {
     pub fn load() -> &'static Config {
         CONFIG.get_or_init(|| {
-            let config_str = fs::read_to_string("config.toml").expect("Failed to read config.toml");
-            toml::from_str(&config_str).expect("Failed to parse config.toml")
+            let config_str = fs::read_to_string("config.toml").unwrap_or_else(|e| logger::critical!(
+                "Failed to read config.toml: {}",
+                e
+            ));
+            toml::from_str(&config_str).unwrap_or_else(|e| logger::critical!(
+                "Failed to parse config.toml: {}",
+                e
+            ))
         })
     }
 }

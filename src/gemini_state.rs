@@ -50,10 +50,11 @@ impl GeminiState {
 
         if enforce_global {
             let last_global = self.last_global.lock().await;
-            if let Some(last) = *last_global {
-                if Instant::now().duration_since(last) < self.global_cooldown {
-                    return false;
-                }
+
+            if let Some(last) = *last_global
+                && Instant::now().duration_since(last) < self.global_cooldown
+            {
+                return false;
             }
         }
 

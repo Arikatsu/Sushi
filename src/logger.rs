@@ -42,5 +42,15 @@ macro_rules! log_error {
     })
 }
 
+macro_rules! log_critical {
+    ($($arg:tt)*) => ({
+        $crate::logger::write_line(&format!("\x1b[91;1m CRITICAL\x1b[0m   {}", format!($($arg)*)));
+        std::process::exit(1);
+    })
+}
+
 #[allow(unused_imports)]
-pub(crate) use {log_debug as debug, log_error as error, log_info as info, log_warn as warn};
+pub(crate) use {
+    log_critical as critical, log_debug as debug, log_error as error, log_info as info,
+    log_warn as warn,
+};
