@@ -13,7 +13,10 @@ pub async fn handle(_ctx: &serenity::Context, _new_message: &Message, _data: &cr
         return;
     };
 
-    if _new_message.author.bot || !_data.app_config.ai.allowed_guilds.contains(&guild_id) {
+    if _new_message.author.bot
+        || !_data.app_config.ai.allowed_guilds.contains(&guild_id)
+        || _new_message.content.is_empty()
+    {
         return;
     }
 
