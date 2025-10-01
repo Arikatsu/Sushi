@@ -1,5 +1,5 @@
 # ---- Build ----
-FROM rust:1.80 as builder
+FROM rust:1.90 as builder
 
 WORKDIR /usr/src/app
 COPY . .
