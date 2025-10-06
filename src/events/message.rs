@@ -84,8 +84,6 @@ pub async fn handle(_ctx: &serenity::Context, _new_message: &Message, _data: &cr
         return;
     }
 
-    _data.gemini_state.record_usage(true).await;
-
     let resp_json: serde_json::Value = response.json().await.unwrap_or_default();
     let reply = resp_json["candidates"]
         .get(0)

@@ -1,6 +1,5 @@
 mod commands;
 mod events;
-mod gemini_state;
 mod utils;
 
 use crate::utils::Config;
@@ -13,7 +12,6 @@ struct Data {
     http_client: reqwest::Client,
     app_config: &'static Config,
     start_time: std::time::Instant,
-    gemini_state: gemini_state::GeminiState,
 }
 
 type Error = Box<dyn std::error::Error + Send + Sync>;
@@ -62,7 +60,6 @@ async fn main() {
                     http_client: reqwest::Client::new(),
                     app_config: config,
                     start_time,
-                    gemini_state: gemini_state::GeminiState::new(config.ai.global_cooldown_seconds),
                 })
             })
         })

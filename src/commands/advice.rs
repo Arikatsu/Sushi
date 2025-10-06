@@ -28,12 +28,6 @@ pub async fn advice(
 
     let data = ctx.data();
     
-    if !data.gemini_state.can_proceed(false).await {
-        ctx.say("Daily quota ran out lol.")
-            .await?;
-        return Ok(());
-    }
-    
     let topic = topic.unwrap_or_else(|| {
         let t = Instant::now().elapsed().as_nanos();
         let idx = ((t ^ (t >> 32)) % (PROMPT_TOPICS.len() as u128)) as usize;
@@ -78,8 +72,6 @@ pub async fn advice(
             .await?;
         return Ok(());
     }
-    
-    data.gemini_state.record_usage(false).await;
 
     let resp_json: serde_json::Value = response.json().await?;
     let advice = resp_json["candidates"]
