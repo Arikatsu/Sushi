@@ -32,7 +32,7 @@ async fn main() {
     logger::info!("Setting up framework...");
     let framework = poise::Framework::<Data, Error>::builder()
         .options(poise::FrameworkOptions {
-            commands: commands::all_commands(),
+            commands: commands::get_commands(),
             event_handler: |ctx, event, _framework, data| {
                 Box::pin(events::handler(ctx, event, data))
             },
