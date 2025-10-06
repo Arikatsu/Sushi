@@ -1,15 +1,17 @@
 mod commands;
-mod config;
 mod events;
 mod gemini_state;
-mod logger;
+mod utils;
+
+use crate::utils::Config;
+use crate::utils::logger;
 
 use poise::serenity_prelude as serenity;
 use serenity::GatewayIntents;
 
 struct Data {
     http_client: reqwest::Client,
-    app_config: &'static config::Config,
+    app_config: &'static Config,
     start_time: std::time::Instant,
     gemini_state: gemini_state::GeminiState,
 }
@@ -24,7 +26,7 @@ async fn main() {
     #[cfg(debug_assertions)]
     logger::enable_debug();
 
-    let config = config::Config::load();
+    let config = Config::load();
     logger::info!("Config loaded");
 
     let intents = GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT;

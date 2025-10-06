@@ -1,4 +1,4 @@
-use crate::logger;
+use crate::utils::logger;
 
 use std::fs;
 use std::sync::OnceLock;
