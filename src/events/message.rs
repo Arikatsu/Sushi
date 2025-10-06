@@ -1,61 +1,44 @@
-use crate::logger;
+use crate::utils::gemini;
+use crate::utils::logger;
 
 use poise::serenity_prelude as serenity;
+use serenity::GetMessages;
 use serenity::model::channel::Message;
 
-const API_URL: &str =
+static API_URL: &str =
     "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent";
 
 pub async fn handle(_ctx: &serenity::Context, _new_message: &Message, _data: &crate::Data) {
-    let guild_id = if let Some(gid) = _new_message.guild_id {
-        u64::from(gid)
-    } else {
-        return;
+    let guild_id = match _new_message.guild_id {
+        Some(id) => u64::from(id),
+        None => return,
     };
 
-    if _new_message.author.bot
-        || !_data.app_config.ai.allowed_guilds.contains(&guild_id)
-        || _new_message.content.is_empty()
-    {
+    if _new_message.author.bot || !_data.app_config.ai.allowed_guilds.contains(&guild_id) {
         return;
     }
 
-    if !_data.gemini_state.can_proceed(true).await {
+    if !_new_message.mentions_me(&_ctx.http).await.unwrap_or(false) {
         return;
     }
 
-    let request_body = serde_json::json!({
-        "contents": [
-            {
-                "role": "user",
-                "parts": [
-                    { "text": _new_message.content }
-                ]
-            }
-        ],
-        "system_instruction": {
-            "parts": [
-                { "text": _data.app_config.ai.message_event_instruction }
-            ]
-        },
-        "safetySettings": [
-            {
-                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                "threshold": "BLOCK_NONE"
-            },
-            {
-                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                "threshold": "BLOCK_NONE"
-            }
-        ],
-        "generationConfig": {
-            "temperature": 0.5,
-            "topP": 0.8,
-            "maxOutputTokens": 100,
-            "stopSequences": ["\n"],
-            "topK": 40
-        }
-    });
+    let typing = _new_message.channel_id.start_typing(&_ctx.http);
+
+    let past_messages = _new_message
+        .channel_id
+        .messages(&_ctx.http, GetMessages::new().limit(5))
+        .await
+        .unwrap_or_else(|e| {
+            logger::error!("Failed to fetch messages: {}", e);
+            vec![]
+        });
+
+    let request_body = gemini::make_request_body(
+        &past_messages,
+        _data.app_config.bot.client_id,
+        &_ctx.cache.current_user().name,
+        &_data.app_config.ai.message_event_instruction,
+    );
 
     let response = _data
         .http_client
@@ -91,6 +74,7 @@ pub async fn handle(_ctx: &serenity::Context, _new_message: &Message, _data: &cr
         .and_then(|p| p["text"].as_str())
         .unwrap_or("...");
 
+    typing.stop();
     if let Err(err) = _new_message.reply(&_ctx.http, reply).await {
         logger::error!("Failed to send message: {}", err);
     }
