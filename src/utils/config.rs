@@ -1,8 +1,8 @@
 use crate::utils::logger;
 
 use std::fs;
-use std::sync::OnceLock;
 
+use once_cell::sync::OnceCell;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -26,10 +26,9 @@ pub struct AIConfig {
     pub message_event_instruction: String,
     // "use a HashSet bro" this list contains like TWO GUILDS brochacho
     pub allowed_guilds: Vec<u64>,
-    pub global_cooldown_seconds: u64,
 }
 
-static CONFIG: OnceLock<Config> = OnceLock::new();
+static CONFIG: OnceCell<Config> = OnceCell::new();
 
 impl Config {
     pub fn load() -> &'static Config {
