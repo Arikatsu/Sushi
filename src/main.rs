@@ -3,6 +3,7 @@ mod events;
 mod utils;
 
 use crate::utils::Config;
+use crate::utils::PromptDetector;
 use crate::utils::logger;
 
 use poise::serenity_prelude as serenity;
@@ -12,6 +13,7 @@ struct Data {
     http_client: reqwest::Client,
     app_config: &'static Config,
     start_time: std::time::Instant,
+    prompt_detector: PromptDetector,
 }
 
 type Error = Box<dyn std::error::Error + Send + Sync>;
@@ -26,7 +28,7 @@ async fn main() {
 
     let config = Config::load();
     logger::info!("Config loaded");
-
+    
     let intents = GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT;
 
     logger::info!("Setting up framework...");
@@ -60,6 +62,9 @@ async fn main() {
                     http_client: reqwest::Client::new(),
                     app_config: config,
                     start_time,
+                    prompt_detector: PromptDetector::new(
+                        &config.ai.message_event_instruction,
+                    ),
                 })
             })
         })

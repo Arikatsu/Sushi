@@ -74,6 +74,9 @@ pub async fn handle(_ctx: &serenity::Context, _new_message: &Message, _data: &cr
         .and_then(|p| p["text"].as_str())
         .unwrap_or("...");
 
+    let reply = if _data.prompt_detector.contains_prompt(reply)
+    { "go away" } else { reply };
+
     typing.stop();
     if let Err(err) = _new_message.reply(&_ctx.http, reply).await {
         logger::error!("Failed to send message: {}", err);
